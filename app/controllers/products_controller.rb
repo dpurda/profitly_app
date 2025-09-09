@@ -23,7 +23,8 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.save
         if @product.stock_id.present?
-          format.html { redirect_to stocks_path, notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
+          stock = Stock.find(@product.stock_id)
+          format.html { redirect_to stocks_path(search: stock.description), notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
         else
           format.html { redirect_to @product, notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
         end
