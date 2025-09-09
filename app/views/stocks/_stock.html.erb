@@ -57,7 +57,7 @@
           </thead>
           <tbody class="product-list-<%= stock.id %>">
             <% stock.products.each do |product| %>
-              <tr class="hover:bg-gray-100 product-row" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
+              <tr class="<%= product.out_price.present? ? 'bg-green-50 hover:bg-green-100' : 'hover:bg-gray-100' %> product-row" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
                 <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= product.description %></td>
                 <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= number_to_currency(product.in_price, unit: '') %></td>
                 <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= number_to_currency(product.out_price, unit: '') %></td>
@@ -86,7 +86,7 @@
       <div class="md:hidden">
         <div class="space-y-3 product-list-mobile-<%= stock.id %>">
           <% stock.products.each do |product| %>
-            <div class="bg-white border border-gray-300 rounded-lg p-3 shadow-sm product-card" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
+            <div class="<%= product.out_price.present? ? 'bg-green-50' : 'bg-white' %> border border-gray-300 rounded-lg p-3 shadow-sm product-card" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
               <div class="flex justify-between items-start">
                 <div class="space-y-1">
                   <h3 class="font-medium text-gray-800"><%= product.description %></h3>
