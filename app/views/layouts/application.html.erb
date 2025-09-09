@@ -23,6 +23,13 @@
   </head>
 
   <body>
+    <!-- Flash messages -->
+    <% flash.each do |name, msg| %>
+      <div class="p-2 my-2 text-white bg-indigo-500 rounded">
+        <%= msg %>
+      </div>
+    <% end %>
+    <!-- Main content -->
     <%= yield %>
   </body>
 </html>
