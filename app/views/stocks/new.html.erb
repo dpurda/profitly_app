@@ -1,0 +1,21 @@
+<% content_for :title, "Add new stock" %>
+
+<div class="flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Add New Stock
+    </h2>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <%= render "form", stock: @stock %>
+      
+      <div class="mt-6">
+        <div class="text-center text-sm">
+          <%= link_to "Back to stocks", stocks_path, class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
