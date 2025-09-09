@@ -22,14 +22,21 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <!-- Flash messages -->
-    <% flash.each do |name, msg| %>
-      <div class="p-2 my-2 text-white bg-indigo-500 rounded">
-        <%= msg %>
+  <body class="bg-gray-50 min-h-screen">
+    <%= render 'layouts/navbar' %>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <!-- Flash messages -->
+      <% flash.each do |name, msg| %>
+        <div class="p-4 mb-4 text-white <%= name == 'notice' ? 'bg-indigo-500' : 'bg-red-500' %> rounded-md shadow">
+          <%= msg %>
+        </div>
+      <% end %>
+      
+      <!-- Main content -->
+      <div class="bg-white shadow-sm rounded-lg p-6">
+        <%= yield %>
       </div>
-    <% end %>
-    <!-- Main content -->
-    <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,8 +1,79 @@
+inherit_from: .rubocop_todo.yml
+
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'bin/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'node_modules/**/*'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'storage/**/*'
+
+# Metrics customizations
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*.rb'
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 150
+
+# Style customizations
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  # Add auto-correction option
+  AutoCorrect: true
+
+Style/SymbolArray:
+  EnforcedStyle: percent
+
+Style/WordArray:
+  EnforcedStyle: percent
+
+# Layout customizations
+Layout/LineLength:
+  Max: 100
+  Exclude:
+    - 'config/initializers/**/*'
+    - 'config/environments/**/*.rb'
+    - 'Gemfile'
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# Rails specific
+Rails:
+  Enabled: true
+
+Rails/FilePath:
+  EnforcedStyle: arguments
+
+# Devise specific settings
+Rails/LexicallyScopedActionFilter:
+  Exclude:
+    - 'app/controllers/users/registrations_controller.rb'
