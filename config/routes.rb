@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :products, only: %i[show new create edit update destroy]
   resources :stocks
   devise_for :users, controllers: {
