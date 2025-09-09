@@ -1,0 +1,68 @@
+<%= form_with(model: product, html: { class: "space-y-6" }) do |form| %>
+  <% if product.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4 mb-6">
+      <div class="flex">
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800"><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc pl-5 space-y-1">
+              <% product.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= form.text_field :description, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :purchase_price, class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= form.number_field :in_price, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :sale_price, "Sale price (to be filled when product sells)", class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= form.number_field :out_price, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :size, "Size (optional)", class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= form.text_field :size, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :product_code, "Product Code (auto-generated if blank)", class: "block text-sm font-medium text-gray-700" %>
+    <div class="mt-1">
+      <%= form.text_field :prod_code, placeholder: "Random 8-character code will be generated", class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+  </div>
+
+  <div>
+    <% if product.stock_id %>
+      <%= form.hidden_field :stock_id %>
+    <% else %>
+      <%= form.label :stock_id, class: "block text-sm font-medium text-gray-700" %>
+      <div class="mt-1">
+        <%= form.collection_select :stock_id, Stock.all, :id, :description, { include_blank: true }, { class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" } %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+  </div>
+<% end %>

@@ -1,1 +1,111 @@
-<h1 class="text-3xl font-bold text-center mt-10">Welcome to Profitly App</h1>
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-indigo-700 to-purple-800 text-white py-16 rounded-lg shadow-lg">
+  <div class="container mx-auto px-4 text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Welcome to Profitly</h1>
+    <p class="text-xl md:text-2xl max-w-2xl mx-auto opacity-90">Track your inventory, monitor pricing, and maximize your profits with ease</p>
+    
+    <% if user_signed_in? %>
+      <div class="mt-8">
+        <%= link_to "Manage Stocks", stocks_path, class: "bg-white text-indigo-700 hover:bg-indigo-50 text-lg font-bold py-3 px-8 rounded-full shadow-md transition duration-300" %>
+      </div>
+    <% else %>
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+        <%= link_to "Sign Up", new_user_registration_path, class: "bg-white text-indigo-700 hover:bg-indigo-50 text-lg font-bold py-3 px-8 rounded-full shadow-md transition duration-300" %>
+        <%= link_to "Login", new_user_session_path, class: "bg-transparent hover:bg-white hover:text-indigo-700 text-white text-lg font-bold py-3 px-8 rounded-full border-2 border-white transition duration-300" %>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">What Profitly Can Do For You</h2>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Inventory Management</h3>
+        <p class="text-gray-600">Keep track of all your stocks with detailed descriptions and organize them by date.</p>
+      </div>
+      
+      <!-- Feature 2 -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Price Tracking</h3>
+        <p class="text-gray-600">Record both purchase and selling prices for each product to accurately monitor your margins.</p>
+      </div>
+      
+      <!-- Feature 3 -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+        <div class="text-indigo-600 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Profit Analysis</h3>
+        <p class="text-gray-600">Easily calculate and visualize your profits with our intuitive dashboard and reporting tools.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-100 rounded-lg">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">How It Works</h2>
+    
+    <div class="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+      <!-- Step 1 -->
+      <div class="text-center">
+        <div class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+        <h3 class="text-lg font-bold mb-2 text-gray-800">Create a Stock</h3>
+        <p class="text-gray-600">Add a new stock with description and date</p>
+      </div>
+      
+      <!-- Step 2 -->
+      <div class="text-center">
+        <div class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+        <h3 class="text-lg font-bold mb-2 text-gray-800">Add Products</h3>
+        <p class="text-gray-600">Add products with purchase and selling prices</p>
+      </div>
+      
+      <!-- Step 3 -->
+      <div class="text-center">
+        <div class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+        <h3 class="text-lg font-bold mb-2 text-gray-800">Track Inventory</h3>
+        <p class="text-gray-600">Manage product details and inventory levels</p>
+      </div>
+      
+      <!-- Step 4 -->
+      <div class="text-center">
+        <div class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+        <h3 class="text-lg font-bold mb-2 text-gray-800">Monitor Profits</h3>
+        <p class="text-gray-600">See your profits grow in real-time</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">Ready to Start Maximizing Your Profits?</h2>
+    <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Join thousands of businesses that use Profitly to track inventory and increase their bottom line.</p>
+    
+    <% if !user_signed_in? %>
+      <%= link_to "Get Started Today", new_user_registration_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-bold py-3 px-10 rounded-lg shadow-lg transition duration-300" %>
+    <% else %>
+      <%= link_to "Go to Dashboard", stocks_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-bold py-3 px-10 rounded-lg shadow-lg transition duration-300" %>
+    <% end %>
+  </div>
+</section>

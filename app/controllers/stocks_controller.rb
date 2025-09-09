@@ -9,6 +9,7 @@ class StocksController < ApplicationController
 
   # GET /stocks/1 or /stocks/1.json
   def show
+    @products = @stock.products
   end
 
   # GET /stocks/new
@@ -68,6 +69,6 @@ class StocksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def stock_params
-      params.require(:stock).permit(:description, :stock_date)
+      params.expect(stock: [ :description, :stock_date ])
     end
 end

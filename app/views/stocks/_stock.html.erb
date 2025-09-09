@@ -1,8 +1,162 @@
 <div id="<%= dom_id stock %>" class="space-y-3">
-  <div>
-    <h3 class="text-lg font-semibold text-gray-800"><%= stock.description %></p>
+  <div class="border-b border-gray-300 pb-2 flex justify-between items-center">
+    <h1 class="text-lg font-semibold text-gray-800"><%= stock.description.upcase %> - <%= stock.stock_date %></h1>
+    <%= link_to new_product_path(stock_id: stock.id), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm" do %>
+      Add Product
+    <% end %>
   </div>
   <div>
-    <p class="text-gray-600"><%= stock.stock_date %></p>
+    <div class="px-4 py-4 mt-4 mb-4 bg-white rounded-lg shadow-sm">
+      <% total_p = 0 %>
+      <% total_s = 0 %>
+      <% profit = 0 %>
+      <% stock.products.each do |product| %>
+        <% total_p += product.in_price %>
+        <% total_s += product.out_price if product.out_price.present? %>
+        <% profit = total_s - total_p %>
+      <% end %>
+      <h3 class="text-lg font-semibold text-gray-800 mb-3">Summary</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-3 bg-gray-50 rounded-md">
+          <span class="block text-sm text-gray-500">Purchase Total</span>
+          <span class="text-lg font-bold text-gray-800"><%= number_to_currency(total_p, unit: '') %></span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-md">
+          <span class="block text-sm text-gray-500">Sale Total</span>
+          <span class="text-lg font-bold text-gray-800"><%= number_to_currency(total_s, unit: '') %></span>
+        </div>
+        <div class="p-3 <%= profit >= 0 ? 'bg-green-50' : 'bg-red-50' %> rounded-md">
+          <span class="block text-sm <%= profit >= 0 ? 'text-green-600' : 'text-red-600' %>">Profit</span>
+          <span class="text-lg font-bold <%= profit >= 0 ? 'text-green-700' : 'text-red-700' %>"><%= number_to_currency(profit, unit: '') %></span>
+        </div>
+      </div>
+    </div>
+    <% if stock.products.any? %>
+      <div class="mb-4">
+        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+          <div class="px-3 py-2 bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500">
+              <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <input type="text" id="product-search-<%= stock.id %>" placeholder="Search products..." class="w-full py-2 px-3 focus:outline-none" aria-label="Search products">
+        </div>
+      </div>
+      <!-- Desktop view (hidden on mobile) -->
+      <div class="hidden md:block">
+        <table class="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Description</th>
+              <th class="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Purchase price</th>
+              <th class="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Sale price</th>
+              <th class="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Size</th>
+              <th class="py-2 px-4 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Product code</th>
+              <th class="py-2 px-4 border-b border-gray-300 text-right text-sm font-medium text-gray-700">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="product-list-<%= stock.id %>">
+            <% stock.products.each do |product| %>
+              <tr class="<%= product.out_price.present? ? 'bg-green-100 hover:bg-green-200' : 'hover:bg-gray-100' %> product-row" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= product.description %></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= number_to_currency(product.in_price, unit: '') %></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= number_to_currency(product.out_price, unit: '') %></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= product.size.upcase %></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800"><%= product.prod_code %></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-800 text-right">
+                  <%= link_to edit_product_path(product), class: "text-indigo-600 hover:text-indigo-900 mr-3", title: "Edit" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline">
+                      <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+                      <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+                    </svg>
+                  <% end %>
+                  <%= button_to product, method: :delete, class: "text-red-600 hover:text-red-900", form: { class: "inline-block", data: { turbo_confirm: "Are you sure you want to delete this product? This action cannot be undone." } }, title: "Delete" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline">
+                      <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
+                    </svg>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Mobile view (shown only on mobile) -->
+      <div class="md:hidden">
+        <div class="space-y-3 product-list-mobile-<%= stock.id %>">
+          <% stock.products.each do |product| %>
+            <div class="<%= product.out_price.present? ? 'bg-green-100' : 'bg-white' %> border border-gray-300 rounded-lg p-3 shadow-sm product-card" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
+              <div class="flex justify-between items-start">
+                <div class="space-y-1">
+                  <h3 class="font-medium text-gray-800"><%= product.description %></h3>
+                  <p class="text-sm text-gray-600">Purchase: <%= number_to_currency(product.in_price, unit: '') %></p>
+                  <p class="text-sm text-gray-600">Sale: <%= number_to_currency(product.out_price, unit: '') %></p>
+                  <p class="text-sm text-gray-600">Size: <%= product.size.upcase %></p>
+                  <p class="text-sm text-gray-600">Code: <%= product.prod_code %></p>
+                </div>
+                <div class="flex space-x-2">
+                  <%= link_to edit_product_path(product), class: "text-indigo-600 hover:text-indigo-900", title: "Edit" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+                      <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+                    </svg>
+                  <% end %>
+                  <%= button_to product, method: :delete, class: "text-red-600 hover:text-red-900", form: { class: "inline-block", data: { turbo_confirm: "Are you sure you want to delete this product? This action cannot be undone." } }, title: "Delete" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" />
+                    </svg>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <p class="text-gray-500">No products found for this stock.</p>
+    <% end %>
   </div>
 </div>
+
+<% if stock.products.any? %>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('product-search-<%= stock.id %>');
+      
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase().trim();
+          
+          // Desktop view
+          const productRows = document.querySelectorAll('.product-list-<%= stock.id %> .product-row');
+          productRows.forEach(row => {
+            const description = row.getAttribute('data-description');
+            const size = row.getAttribute('data-size');
+            const code = row.getAttribute('data-code');
+            
+            const isMatch = description.includes(searchTerm) || 
+                            size.includes(searchTerm) || 
+                            (code && code.includes(searchTerm));
+            
+            row.style.display = isMatch ? '' : 'none';
+          });
+          
+          // Mobile view
+          const productCards = document.querySelectorAll('.product-list-mobile-<%= stock.id %> .product-card');
+          productCards.forEach(card => {
+            const description = card.getAttribute('data-description');
+            const size = card.getAttribute('data-size');
+            const code = card.getAttribute('data-code');
+            
+            const isMatch = description.includes(searchTerm) || 
+                            size.includes(searchTerm) || 
+                            (code && code.includes(searchTerm));
+            
+            card.style.display = isMatch ? '' : 'none';
+          });
+        });
+      }
+    });
+  </script>
+<% end %>
