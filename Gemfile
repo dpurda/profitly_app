@@ -74,3 +74,4 @@ gem 'litestream', '~> 0.14.0'
 
 gem 'aws-sdk-s3', '~> 1.199', require: false
 gem 'administrate'
+gem 'tailwindcss-rails'
