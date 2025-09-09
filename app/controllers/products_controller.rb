@@ -23,7 +23,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.save
         if @product.stock_id.present?
-          format.html { redirect_to stock_path(@product.stock_id), notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
+          format.html { redirect_to stocks_path, notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
         else
           format.html { redirect_to @product, notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
         end
@@ -38,7 +38,7 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to stock_path(@product.stock_id), notice: 'Product was successfully updated.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
+        format.html { redirect_to stocks_path, notice: 'Product was successfully updated.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -50,7 +50,7 @@ class ProductsController < ApplicationController
     @product.destroy!
 
     respond_to do |format|
-      format.html { redirect_to products_path, notice: 'Product was successfully destroyed.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
+      format.html { redirect_to stocks_path, notice: 'Product was successfully destroyed.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
       format.json { head :no_content }
     end
   end

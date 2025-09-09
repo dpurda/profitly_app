@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8">
+<div class="w-full px-4 py-8">
   <% if notice.present? %>
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
       <%= notice %>
@@ -15,26 +15,11 @@
                focus:ring-offset-2 focus:ring-indigo-500" %>
   </div>
 
-  <div id="stocks" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div id="stocks" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
     <% @stocks.each do |stock| %>
-      <% 
-        total_p = 0
-        total_s = 0
-        profit = 0
-        stock.products.each do |product| 
-          total_p += product.in_price
-          total_s += product.out_price if product.out_price.present?
-        end
-        profit = total_s - total_p
-      %>
-      <%= link_to stock, class: "block #{profit >= 0 ? 'bg-green-50' : 'bg-red-50'} rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 text-center" do %>
-        <span class="text-black hover:text-indigo-800 font-medium"><%= stock.description.upcase %> - <%= stock.stock_date %></span>
-        <div class="mt-2">
-          <span class="<%= profit >= 0 ? 'text-green-700' : 'text-red-700' %> font-medium">
-            <%= number_to_currency(profit, unit: '') %>
-          </span>
-        </div>
-      <% end %>
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <%= render stock %>
+      </div>
     <% end %>
   </div>
 </div>

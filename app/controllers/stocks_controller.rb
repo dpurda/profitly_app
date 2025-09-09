@@ -29,11 +29,9 @@ class StocksController < ApplicationController
 
     respond_to do |format|
       if @stock.save
-        format.html { redirect_to @stock, notice: 'Stock was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
-        format.json { render :show, status: :created, location: @stock }
+        format.html { redirect_to stocks_path, notice: 'Stock was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @stock.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -42,11 +40,9 @@ class StocksController < ApplicationController
   def update
     respond_to do |format|
       if @stock.update(stock_params)
-        format.html { redirect_to @stock, notice: 'Stock was successfully updated.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
-        format.json { render :show, status: :ok, location: @stock }
+        format.html { redirect_to stocks_path, notice: 'Stock was successfully updated.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @stock.errors, status: :unprocessable_entity }
       end
     end
   end
