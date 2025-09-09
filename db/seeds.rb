@@ -8,10 +8,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+User.destroy_all
+
 User.create!(
   first_name: "Daniel",
   last_name: "Purda",
   email: "daniel@purda.com",
+  role: :admin,
   password: "password123",
   password_confirmation: "password123"
 )
