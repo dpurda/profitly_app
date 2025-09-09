@@ -4,7 +4,11 @@ class StocksController < ApplicationController
 
   # GET /stocks or /stocks.json
   def index
-    @stocks = Stock.all
+    if params[:search].present?
+      @stocks = Stock.where('description LIKE ?', "%#{params[:search]}%")
+    else
+      @stocks = Stock.all
+    end
   end
 
   # GET /stocks/1 or /stocks/1.json
