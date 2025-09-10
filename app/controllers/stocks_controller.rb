@@ -6,8 +6,23 @@ class StocksController < ApplicationController
   # GET /stocks or /stocks.json
   def index
     @stocks = Stock.where(user_id: current_user.id)
-    @stock_summary = calculate_stock_summary
-    @stocks_with_details = calculate_stocks_details(@stocks)
+    @all_stocks_with_details = calculate_stocks_details(@stocks)
+
+    # Split stocks into two categories: fully sold and with unsold products
+    @stocks_with_unsold_products = @all_stocks_with_details.select do |details|
+      details[:products_with_out_price] < details[:total_products]
+    end
+
+    @fully_sold_stocks = @all_stocks_with_details.select do |details|
+      details[:total_products] > 0 && details[:products_with_out_price] == details[:total_products]
+    end
+
+    # Default tab is stocks with unsold products
+    @current_tab = params[:tab] || 'unsold'
+    @stocks_with_details = @current_tab == 'sold' ? @fully_sold_stocks : @stocks_with_unsold_products
+
+    # Calculate overall summary
+    @stock_summary = calculate_stock_summary(@stocks)
   end
 
   # GET /stocks/1 or /stocks/1.json
@@ -86,7 +101,8 @@ class StocksController < ApplicationController
     end
 
     # Calculate summary of all stocks
-    def calculate_stock_summary
+    def calculate_stock_summary(stocks = nil)
+      stocks ||= @stocks
       summary = {
         total_in_price: 0,
         total_out_price: 0,
@@ -94,7 +110,7 @@ class StocksController < ApplicationController
         total_sold_products_count: 0
       }
 
-      @stocks.each do |stock|
+      stocks.each do |stock|
         stock.products.each do |product|
           summary[:total_products_count] += 1
           summary[:total_in_price] += product.in_price if product.in_price.present?
@@ -109,6 +125,7 @@ class StocksController < ApplicationController
       summary[:total_profit] = summary[:total_out_price] - summary[:total_in_price]
       summary
     end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_stock
       begin
