@@ -5,34 +5,44 @@
       <%= notice %>
     </div>
   <% end %>
+  
+  <div class="p-6 mb-8 border-b border-gray-200">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">SUMMARY OF ALL STOCKS</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="bg-blue-50 rounded-lg p-4">
+        <p class="text-sm text-gray-600">Total Purchase Cost</p>
+        <p class="text-xl font-bold text-blue-700"><%= number_to_currency(@stock_summary[:total_in_price], unit: '') %></p>
+      </div>
+      <div class="bg-yellow-100 rounded-lg p-4">
+        <p class="text-sm text-gray-600">Total Sales Revenue</p>
+        <p class="text-xl font-bold text-green-700"><%= number_to_currency(@stock_summary[:total_out_price], unit: '') %></p>
+      </div>
+      <div class="<%= @stock_summary[:total_profit] >= 0 ? 'bg-green-50' : 'bg-red-50' %> rounded-lg p-4">
+        <p class="text-sm text-gray-600">Total Profit</p>
+        <p class="text-xl font-bold <%= @stock_summary[:total_profit] >= 0 ? 'text-green-700' : 'text-red-700' %>">
+          <%= number_to_currency(@stock_summary[:total_profit], unit: '') %>
+        </p>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-sm text-gray-600">Products Sold</p>
+        <p class="text-xl font-bold text-gray-700"><%= @stock_summary[:total_sold_products_count] %> / <%= @stock_summary[:total_products_count] %></p>
+      </div>
+    </div>
+  </div>
 
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-gray-800">STOCKS</h1>
-    <%= link_to "Add new stock", new_stock_path, 
-        class: "bg-indigo-600 text-white px-3 py-1.5 text-sm rounded-md hover:bg-indigo-700 
-               transition ease-in-out duration-150 font-medium focus:outline-none focus:ring-2 
-               focus:ring-offset-2 focus:ring-indigo-500" %>
+    <%= link_to "Add new stock", new_stock_path, class: "bg-indigo-600 text-white px-3 py-1.5 text-sm rounded-md hover:bg-indigo-700 transition ease-in-out duration-150 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
   </div>
 
   <div id="stocks" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <% @stocks.each do |stock| %>
+    <% @stocks_with_details.each do |stock_details| %>
       <% 
-        total_p = 0
-        total_s = 0
-        profit = 0
-        total_products = stock.products.count
-        products_with_out_price = 0
+        stock = stock_details[:stock]
+        profit = stock_details[:profit]
+        total_products = stock_details[:total_products]
+        products_with_out_price = stock_details[:products_with_out_price]
         
-        stock.products.each do |product| 
-          total_p += product.in_price
-          if product.out_price.present?
-            total_s += product.out_price
-            products_with_out_price += 1
-          end
-        end
-        profit = total_s - total_p
-      %>
-      <% 
         # Determine background color
         bg_color = if total_products > 0 && products_with_out_price == total_products && profit > 0
                      'bg-green-50'

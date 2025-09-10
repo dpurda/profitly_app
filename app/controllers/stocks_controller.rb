@@ -5,6 +5,8 @@ class StocksController < ApplicationController
   # GET /stocks or /stocks.json
   def index
     @stocks = Stock.all
+    @stock_summary = calculate_stock_summary
+    @stocks_with_details = calculate_stocks_details(@stocks)
   end
 
   # GET /stocks/1 or /stocks/1.json
@@ -58,6 +60,53 @@ class StocksController < ApplicationController
   end
 
   private
+    # Calculate financial details for each stock
+    def calculate_stocks_details(stocks)
+      stocks.map do |stock|
+        details = {}
+        details[:stock] = stock
+        details[:total_p] = 0
+        details[:total_s] = 0
+        details[:total_products] = stock.products.count
+        details[:products_with_out_price] = 0
+
+        stock.products.each do |product|
+          details[:total_p] += product.in_price if product.in_price.present?
+          if product.out_price.present?
+            details[:total_s] += product.out_price
+            details[:products_with_out_price] += 1
+          end
+        end
+
+        details[:profit] = details[:total_s] - details[:total_p]
+        details
+      end
+    end
+
+    # Calculate summary of all stocks
+    def calculate_stock_summary
+      summary = {
+        total_in_price: 0,
+        total_out_price: 0,
+        total_products_count: 0,
+        total_sold_products_count: 0
+      }
+
+      @stocks.each do |stock|
+        stock.products.each do |product|
+          summary[:total_products_count] += 1
+          summary[:total_in_price] += product.in_price if product.in_price.present?
+
+          if product.out_price.present?
+            summary[:total_out_price] += product.out_price
+            summary[:total_sold_products_count] += 1
+          end
+        end
+      end
+
+      summary[:total_profit] = summary[:total_out_price] - summary[:total_in_price]
+      summary
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_stock
       @stock = Stock.find(params[:id])
