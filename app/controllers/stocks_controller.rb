@@ -1,10 +1,11 @@
 class StocksController < ApplicationController
   before_action :authenticate_user!
+  before_action :stock_belongs_to_current_user?, only: %i[ index show new create edit update destroy ]
   before_action :set_stock, only: %i[ show edit update destroy ]
 
   # GET /stocks or /stocks.json
   def index
-    @stocks = Stock.all
+    @stocks = Stock.where(user_id: current_user.id)
     @stock_summary = calculate_stock_summary
     @stocks_with_details = calculate_stocks_details(@stocks)
   end
@@ -110,11 +111,29 @@ class StocksController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_stock
-      @stock = Stock.find(params[:id])
+      begin
+        @stock = Stock.where(user_id: current_user.id).find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        redirect_to root_path, alert: "You don't have access to this stock" # rubocop:disable Rails/I18nLocaleTexts
+      end
     end
 
     # Only allow a list of trusted parameters through.
     def stock_params
-      params.require(:stock).permit(:description, :stock_date)
+      params.expect(stock: [ :description, :stock_date ])
+    end
+
+    def stock_belongs_to_current_user?
+      stock_id = params[:id]
+      return true if action_name == 'index' || action_name == 'new' || action_name == 'create'
+      return true if stock_id.blank?
+
+      # If the stock doesn't belong to current user, redirect to root
+      unless Stock.exists?(id: stock_id, user_id: current_user.id)
+        redirect_to root_path, alert: "You don't have access to this stock" # rubocop:disable Rails/I18nLocaleTexts
+        return false
+      end
+
+      true
     end
 end
