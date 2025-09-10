@@ -6,28 +6,14 @@ class StocksController < ApplicationController
   # GET /stocks or /stocks.json
   def index
     @stocks = Stock.where(user_id: current_user.id)
-    @all_stocks_with_details = calculate_stocks_details(@stocks)
-
-    # Split stocks into two categories: fully sold and with unsold products
-    @stocks_with_unsold_products = @all_stocks_with_details.select do |details|
-      details[:products_with_out_price] < details[:total_products] || details[:total_products] == 0
-    end
-
-    @fully_sold_stocks = @all_stocks_with_details.select do |details|
-      details[:total_products] > 0 && details[:products_with_out_price] == details[:total_products]
-    end
-
-    # Default tab is stocks with unsold products
-    @current_tab = params[:tab] || 'unsold'
-    @stocks_with_details = @current_tab == 'sold' ? @fully_sold_stocks : @stocks_with_unsold_products
-
-    # Calculate overall summary
-    @stock_summary = calculate_stock_summary(@stocks)
+    @matched_product_ids = []
+    handle_search_filter if params[:search].present?
+    process_stocks_for_display
+    @stock_summary = calculate_stock_summary(@all_user_stocks)
   end
 
   # GET /stocks/1 or /stocks/1.json
   def show
-    # Sort products: first ones without out_price, then by out_price ascending
     @products = @stock.products.order(Arel.sql('CASE WHEN out_price IS NULL THEN 0 ELSE 1 END, out_price ASC'))
   end
 
@@ -77,26 +63,99 @@ class StocksController < ApplicationController
   end
 
   private
+
+    # Handle search functionality to filter stocks
+    def handle_search_filter
+      search_term = params[:search]
+      @matched_product_ids = find_matching_product_ids(search_term)
+      filter_stocks_by_matching_products
+      @search_active = true
+      @search_term = search_term
+    end
+
+    # Find products matching the search term
+    def find_matching_product_ids(search_term)
+      Product.joins(:stock)
+            .where(stocks: { user_id: current_user.id })
+            .where('products.description LIKE ? OR products.prod_code LIKE ? OR products.size LIKE ?',
+                    "%#{search_term}%", "%#{search_term}%", "%#{search_term}%")
+            .pluck(:id)
+    end
+
+    # Filter stocks to only those with matching products
+    def filter_stocks_by_matching_products
+      if @matched_product_ids.any?
+        stock_ids = Product.where(id: @matched_product_ids).pluck(:stock_id).uniq
+        @stocks = @stocks.where(id: stock_ids) if stock_ids.any?
+      end
+    end
+
+    # Process stocks and prepare view data
+    def process_stocks_for_display
+      @all_stocks_with_details = calculate_stocks_details(@stocks)
+      categorize_stocks
+      @current_tab = params[:tab] || 'unsold'
+      @stocks_with_details = @current_tab == 'sold' ? @fully_sold_stocks : @stocks_with_unsold_products
+    end
+
+    # Categorize stocks as sold or with unsold products
+    def categorize_stocks
+      @stocks_with_unsold_products = @all_stocks_with_details.select do |details|
+        details[:products_with_out_price] < details[:total_products] || details[:total_products] == 0
+      end
+
+      @fully_sold_stocks = @all_stocks_with_details.select do |details|
+        details[:total_products] > 0 && details[:products_with_out_price] == details[:total_products]
+      end
+    end
+
     # Calculate financial details for each stock
     def calculate_stocks_details(stocks)
-      stocks.map do |stock|
-        details = {}
-        details[:stock] = stock
-        details[:total_p] = 0
-        details[:total_s] = 0
-        details[:total_products] = stock.products.count
-        details[:products_with_out_price] = 0
+      matched_product_ids = @matched_product_ids || []
 
-        stock.products.each do |product|
-          details[:total_p] += product.in_price if product.in_price.present?
-          if product.out_price.present?
-            details[:total_s] += product.out_price
-            details[:products_with_out_price] += 1
-          end
-        end
+      stocks.map do |stock|
+        details = calculate_stock_financial_details(stock)
+        add_product_match_details(details, stock, matched_product_ids)
 
         details[:profit] = details[:total_s] - details[:total_p]
         details
+      end
+    end
+
+    # Calculate financial totals for a stock
+    def calculate_stock_financial_details(stock)
+      details = {}
+      details[:stock] = stock
+      details[:total_p] = 0
+      details[:total_s] = 0
+      details[:total_products] = stock.products.count
+      details[:products_with_out_price] = 0
+      details[:products] = []
+      details
+    end
+
+    # Add product match details to the stock details
+    def add_product_match_details(details, stock, matched_product_ids)
+      details[:has_matches] = false
+
+      stock.products.each do |product|
+        product_details = {
+          id: product.id,
+          description: product.description,
+          prod_code: product.prod_code,
+          in_price: product.in_price,
+          out_price: product.out_price,
+          is_match: matched_product_ids.include?(product.id)
+        }
+
+        details[:has_matches] ||= product_details[:is_match]
+        details[:products] << product_details
+
+        details[:total_p] += product.in_price if product.in_price.present?
+        if product.out_price.present?
+          details[:total_s] += product.out_price
+          details[:products_with_out_price] += 1
+        end
       end
     end
 

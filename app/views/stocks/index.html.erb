@@ -5,7 +5,6 @@
       <%= notice %>
     </div>
   <% end %>
-  
   <div class="p-6 mb-8 border-b border-gray-200">
     <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">SUMMARY OF ALL STOCKS</h2>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -29,19 +28,40 @@
       </div>
     </div>
   </div>
-
-  <div class="flex justify-between items-center mb-6">
+  <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold text-gray-800">STOCKS</h1>
-    <%= link_to "Add new stock", new_stock_path, class: "bg-indigo-600 text-white px-3 py-1.5 text-sm rounded-md hover:bg-indigo-700 transition ease-in-out duration-150 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    <%= link_to "Add new stock", new_stock_path, class: "bg-indigo-600 text-white px-3 py-1.5 text-sm rounded-md hover:bg-indigo-700 transition ease-in-out duration-150 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 whitespace-nowrap" %>
+  </div>
+  <div class="mb-6">
+    <%= form_with url: stocks_path, method: :get, class: "w-full", data: { turbo_frame: "_top" } do |f| %>
+      <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+        <div class="px-3 py-2 bg-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <%= f.text_field :search, value: params[:search], placeholder: "Search products...", class: "w-full py-2 px-3 focus:outline-none" %>
+        <% if params[:search].present? %>
+          <%= link_to stocks_path(tab: params[:tab]), class: "px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-500" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
+      <%= f.hidden_field :tab, value: params[:tab] %>
+    <% end %>
   </div>  
   <div class="mb-6 border-b border-gray-200">
     <ul class="flex whitespace-nowrap -mb-px text-sm font-medium text-center min-w-full">
       <li class="mr-2">
-        <%= link_to "Active (#{@stocks_with_unsold_products.size})", stocks_path(tab: 'unsold'), 
+        <%= link_to "Active (#{@stocks_with_unsold_products.size})", 
+            stocks_path(tab: 'unsold', search: params[:search]), 
             class: "inline-block p-4 border-b-2 rounded-t-lg #{@current_tab == 'unsold' ? 'text-indigo-600 border-indigo-600 active' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}" %>
       </li>
       <li class="mr-2">
-        <%= link_to "Complete (#{@fully_sold_stocks.size})", stocks_path(tab: 'sold'), 
+        <%= link_to "Complete (#{@fully_sold_stocks.size})", 
+            stocks_path(tab: 'sold', search: params[:search]), 
             class: "inline-block p-4 border-b-2 rounded-t-lg #{@current_tab == 'sold' ? 'text-indigo-600 border-indigo-600 active' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}" %>
       </li>
     </ul>
@@ -98,6 +118,14 @@
             Sold: <%= products_with_out_price %> / <%= total_products %> products
           <% end %>
         </div>
+        <% if @search_active && stock_details[:has_matches] %>
+          <div class="mt-3 border-t border-gray-200 pt-2">
+            <% matched_products_count = stock_details[:products].select { |p| p[:is_match] }.size %>
+            <p class="text-xs text-left text-gray-600 font-semibold">
+              <%= matched_products_count %> matching product<%= matched_products_count > 1 ? 's' : '' %>
+            </p>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
