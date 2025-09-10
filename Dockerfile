@@ -92,8 +92,9 @@ USER 1000:1000
 
 # Runtime environment
 ENV DATABASE_URL="sqlite3:///data/production.sqlite3"
+ENV PORT=8080
 
-EXPOSE 80
+EXPOSE 8080
 VOLUME /data
 
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
