@@ -23,8 +23,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.save
         if @product.stock_id.present?
-          stock = Stock.find(@product.stock_id)
-          format.html { redirect_to stocks_path(search: stock.description), notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
+          format.html { redirect_to stock_path(@product.stock), notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
         else
           format.html { redirect_to @product, notice: 'Product was successfully created.' } # rubocop:disable Rails/I18nLocaleTexts
         end
@@ -39,7 +38,7 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to stocks_path, notice: 'Product was successfully updated.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
+        format.html { redirect_to stock_path(@product.stock), notice: 'Product was successfully updated.' } # rubocop:disable Rails/I18nLocaleTexts
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -51,7 +50,7 @@ class ProductsController < ApplicationController
     @product.destroy!
 
     respond_to do |format|
-      format.html { redirect_to stocks_path, notice: 'Product was successfully destroyed.', status: :see_other } # rubocop:disable Rails/I18nLocaleTexts
+      format.html { redirect_to stock_path(@product.stock), notice: 'Product was successfully destroyed.' } # rubocop:disable Rails/I18nLocaleTexts
       format.json { head :no_content }
     end
   end
@@ -64,6 +63,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:description, :in_price, :out_price, :size, :prod_code, :stock_id)
+      params.expect(product: [ :description, :in_price, :out_price, :size, :prod_code, :stock_id ])
     end
 end
