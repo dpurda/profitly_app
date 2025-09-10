@@ -10,7 +10,7 @@ class StocksController < ApplicationController
 
     # Split stocks into two categories: fully sold and with unsold products
     @stocks_with_unsold_products = @all_stocks_with_details.select do |details|
-      details[:products_with_out_price] < details[:total_products]
+      details[:products_with_out_price] < details[:total_products] || details[:total_products] == 0
     end
 
     @fully_sold_stocks = @all_stocks_with_details.select do |details|

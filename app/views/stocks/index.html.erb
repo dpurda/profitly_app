@@ -55,7 +55,9 @@
         products_with_out_price = stock_details[:products_with_out_price]
         
         # Determine background color
-        bg_color = if total_products > 0 && products_with_out_price == total_products && profit > 0
+        bg_color = if total_products == 0
+                     'bg-gray-100' # Empty stocks (0 products)
+                   elsif total_products > 0 && products_with_out_price == total_products && profit > 0
                      'bg-green-50'
                    elsif total_products > 0 && products_with_out_price == total_products && profit <= 0
                      'bg-red-50'
@@ -70,17 +72,31 @@
           <div style="position: absolute; top: 10px; right: 10px; z-index: 10;">
             <span class="text-green-600 text-xl font-bold" title="All products sold">✓</span>
           </div>
+        <% elsif total_products == 0 %>
+          <div style="position: absolute; top: 10px; right: 10px; z-index: 10;">
+            <span class="text-gray-600 text-xl font-bold" title="Empty stock">⊘</span>
+          </div>
         <% end %>
         <div class="text-left">
           <span class="text-black hover:text-indigo-800 font-medium"><%= stock.description.upcase %> - <%= stock.stock_date %></span>
         </div>
         <div class="mt-2 text-left">
-          <span class="<%= profit >= 0 ? 'text-green-700' : 'text-red-700' %> font-medium">
-            Profit: <%= number_to_currency(profit, unit: '') %>
-          </span>
+          <% if total_products == 0 %>
+            <span class="text-gray-700 font-medium">
+              Empty Stock
+            </span>
+          <% else %>
+            <span class="<%= profit >= 0 ? 'text-green-700' : 'text-red-700' %> font-medium">
+              Profit: <%= number_to_currency(profit, unit: '') %>
+            </span>
+          <% end %>
         </div>
         <div class="mt-1 text-sm text-gray-600 font-bold text-left">
-          Sold: <%= products_with_out_price %> / <%= total_products %> products
+          <% if total_products == 0 %>
+            No products added yet
+          <% else %>
+            Sold: <%= products_with_out_price %> / <%= total_products %> products
+          <% end %>
         </div>
       <% end %>
     <% end %>
