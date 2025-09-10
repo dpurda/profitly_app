@@ -5,7 +5,8 @@ class StocksController < ApplicationController
 
   # GET /stocks or /stocks.json
   def index
-    @stocks = Stock.where(user_id: current_user.id)
+    @all_user_stocks = Stock.where(user_id: current_user.id)
+    @stocks = @all_user_stocks
     @matched_product_ids = []
     handle_search_filter if params[:search].present?
     process_stocks_for_display
@@ -161,7 +162,7 @@ class StocksController < ApplicationController
 
     # Calculate summary of all stocks
     def calculate_stock_summary(stocks = nil)
-      stocks ||= @stocks
+      stocks ||= @all_user_stocks || @stocks
       summary = {
         total_in_price: 0,
         total_out_price: 0,
