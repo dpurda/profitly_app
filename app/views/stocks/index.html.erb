@@ -120,10 +120,12 @@
         </div>
         <% if @search_active && stock_details[:has_matches] %>
           <div class="mt-3 border-t border-gray-200 pt-2">
-            <% matched_products_count = stock_details[:products].select { |p| p[:is_match] }.size %>
-            <p class="text-xs text-left text-gray-600 font-semibold">
-              <%= matched_products_count %> matching product<%= matched_products_count > 1 ? 's' : '' %>
-            </p>
+            <% matched_products = stock_details[:products].select { |p| p[:is_match] } %>
+            <% matched_products.each do |product| %>
+              <p class="text-xs text-left text-gray-600 font-semibold">
+                <%= product[:description] %>
+              </p>
+            <% end %>
           </div>
         <% end %>
       <% end %>
