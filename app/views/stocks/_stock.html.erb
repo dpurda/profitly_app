@@ -127,11 +127,16 @@
 
 <% if stock.products.any? %>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    // Function to set up the search functionality
+    function setupProductSearch() {
       const searchInput = document.getElementById('product-search-<%= stock.id %>');
       
       if (searchInput) {
-        searchInput.addEventListener('input', function() {
+        // Remove any existing event listeners to prevent duplicates
+        const newSearchInput = searchInput.cloneNode(true);
+        searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+        
+        newSearchInput.addEventListener('input', function() {
           const searchTerm = this.value.toLowerCase().trim();
           
           // Desktop view
@@ -163,6 +168,16 @@
           });
         });
       }
-    });
+    }
+
+    // Run on initial page load
+    document.addEventListener('DOMContentLoaded', setupProductSearch);
+    
+    // Also run when Turbo/Turbolinks loads a page
+    document.addEventListener('turbo:load', setupProductSearch);
+    document.addEventListener('turbolinks:load', setupProductSearch);
+    
+    // Run immediately in case the DOM is already loaded
+    setupProductSearch();
   </script>
 <% end %>
