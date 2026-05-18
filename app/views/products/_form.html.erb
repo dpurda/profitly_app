@@ -1,4 +1,4 @@
-<%= form_with(model: product, html: { class: "space-y-5" }) do |form| %>
+<%= form_with(model: product, html: { class: "space-y-5 min-w-0" }) do |form| %>
   <% if product.errors.any? %>
     <div class="rounded-lg bg-red-50 border border-red-200 p-4">
       <p class="text-sm font-medium text-red-800 mb-1"><%= pluralize(product.errors.count, "error") %> prevented this product from being saved:</p>
@@ -12,31 +12,32 @@
 
   <div>
     <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_field :description, class: "block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
+    <%= form.text_field :description, class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
   </div>
 
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
       <%= form.label :purchase_price, "Purchase price", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.number_field :in_price, step: '0.01', class: "block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
+      <p class="text-xs text-gray-400 mb-1 invisible">·</p>
+      <%= form.number_field :in_price, step: '0.01', class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
     </div>
     <div>
       <%= form.label :sale_price, "Sale price", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <p class="text-xs text-gray-400 mb-1">Fill when sold</p>
-      <%= form.number_field :out_price, step: '0.01', class: "block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
+      <%= form.number_field :out_price, step: '0.01', class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
       <%= form.label :size, "Size", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <p class="text-xs text-gray-400 mb-1">Optional</p>
-      <%= form.text_field :size, class: "block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
+      <%= form.text_field :size, class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
     </div>
     <div>
       <%= form.label :product_code, "Product code", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <p class="text-xs text-gray-400 mb-1">Auto-generated if blank</p>
-      <%= form.text_field :prod_code, placeholder: "e.g. ABC12345", class: "block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
+      <%= form.text_field :prod_code, placeholder: "e.g. ABC12345", class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
     </div>
   </div>
 
@@ -45,11 +46,11 @@
   <% else %>
     <div>
       <%= form.label :stock_id, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.collection_select :stock_id, Stock.all, :id, :description, { include_blank: "Select a stock…" }, { class: "block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white" } %>
+      <%= form.collection_select :stock_id, Stock.all, :id, :description, { include_blank: "Select a stock…" }, { class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white" } %>
     </div>
   <% end %>
 
   <div class="pt-1">
-    <%= form.submit class: "w-full flex justify-center py-2.5 px-4 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors cursor-pointer" %>
+    <%= form.submit class: "w-full flex justify-center py-3 px-4 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors cursor-pointer" %>
   </div>
 <% end %>

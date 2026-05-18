@@ -32,8 +32,8 @@
   </div>
 </aside>
 
-<div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50" onclick="handlePasswordModalBackdrop(event)">
-  <div id="password-modal-dialog" class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+<div id="password-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/50" onclick="handlePasswordModalBackdrop(event)">
+  <div id="password-modal-dialog" class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl w-full sm:max-w-md sm:mx-4 max-h-[90dvh] overflow-y-auto">
     <turbo-frame id="change_password_frame">
       <%= render "users/passwords/form", user: current_user %>
     </turbo-frame>
