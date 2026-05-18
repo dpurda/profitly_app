@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
+  patch 'users/change_password', to: 'users/passwords#update', as: :change_user_password
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 

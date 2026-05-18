@@ -15,12 +15,12 @@
   </nav>
 
   <div class="border-t border-gray-800 p-3 shrink-0">
-    <div class="flex items-center px-3 py-2 mb-1">
+    <button onclick="openPasswordModal()" class="flex items-center w-full px-3 py-2 mb-1 text-left hover:bg-gray-800 rounded-lg transition-colors">
       <div class="w-7 h-7 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
         <%= (current_user.first_name || current_user.email).first.upcase %>
       </div>
       <span class="ml-2.5 text-sm text-gray-300 truncate"><%= current_user.first_name || current_user.email %></span>
-    </div>
+    </button>
     <%= button_to destroy_user_session_path, method: :delete,
         class: "w-full flex items-center px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition-colors" do %>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-3 shrink-0">
@@ -31,3 +31,31 @@
     <% end %>
   </div>
 </aside>
+
+<div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50" onclick="handlePasswordModalBackdrop(event)">
+  <div id="password-modal-dialog" class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
+    <turbo-frame id="change_password_frame">
+      <%= render "users/passwords/form", user: current_user %>
+    </turbo-frame>
+  </div>
+</div>
+
+<script>
+  function openPasswordModal() {
+    var modal = document.getElementById('password-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closePasswordModal() {
+    var modal = document.getElementById('password-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function handlePasswordModalBackdrop(event) {
+    if (event.target === document.getElementById('password-modal')) {
+      closePasswordModal();
+    }
+  }
+</script>
