@@ -98,4 +98,4 @@ EXPOSE 8080
 VOLUME /data
 
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-CMD ["./bin/rake", "litestream:run", "./bin/thrust", "./bin/rails", "server"]
+CMD ["./bin/thrust", "./bin/rails", "server"]
