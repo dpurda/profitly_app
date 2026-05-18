@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   resources :products, only: %i[show new create edit update destroy]
   resources :stocks
   devise_for :users, controllers: {
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
   patch 'users/change_password', to: 'users/passwords#update', as: :change_user_password
 
