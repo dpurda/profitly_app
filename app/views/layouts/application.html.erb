@@ -1,35 +1,73 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Profitly App" %></title>
+    <title><%= content_for(:title) || "Profitly" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
-
-  <body class="bg-gray-50 min-h-screen">
-    <%= render 'layouts/navbar' %>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <!-- Main content -->
-      <div class="bg-white shadow-sm rounded-lg p-6">
-        <%= yield %>
+  <body class="bg-gray-50 antialiased">
+    <% if user_signed_in? %>
+      <div class="flex h-screen overflow-hidden">
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden" onclick="toggleSidebar()"></div>
+        <%= render 'layouts/navbar' %>
+        <div class="flex-1 flex flex-col min-h-0">
+          <div class="md:hidden bg-white border-b border-gray-200 px-4 h-14 flex items-center justify-between shrink-0">
+            <button onclick="toggleSidebar()" class="p-1.5 rounded-md text-gray-500 hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+            <span class="font-bold text-gray-900">Profitly</span>
+            <div class="w-8"></div>
+          </div>
+          <main class="flex-1 overflow-y-auto">
+            <% if notice.present? %>
+              <div class="mx-6 mt-4 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm" role="alert">
+                <%= notice %>
+              </div>
+            <% end %>
+            <% if alert.present? %>
+              <div class="mx-6 mt-4 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm" role="alert">
+                <%= alert %>
+              </div>
+            <% end %>
+            <div class="px-6 py-6 max-w-7xl mx-auto">
+              <%= yield %>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    <% else %>
+      <div class="min-h-screen bg-gray-50">
+        <nav class="bg-white border-b border-gray-200 px-6 h-16 flex items-center justify-between">
+          <%= link_to root_path, class: "font-bold text-gray-900 text-xl tracking-tight" do %>
+            Profitly
+          <% end %>
+          <div class="flex items-center space-x-3">
+            <%= link_to "Log in", new_user_session_path, class: "text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-2" %>
+            <%= link_to "Sign up", new_user_registration_path, class: "text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-colors" %>
+          </div>
+        </nav>
+        <main>
+          <%= yield %>
+        </main>
+      </div>
+    <% end %>
+
+    <script>
+      function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        document.getElementById('sidebar-overlay').classList.toggle('hidden');
+      }
+    </script>
   </body>
 </html>

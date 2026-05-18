@@ -1,49 +1,51 @@
 <% content_for :title, "Stocks" %>
-<div class="container mx-auto px-4 py-8">
-  <% if notice.present? %>
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
-      <%= notice %>
+
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Stocks</h1>
+    <%= link_to new_stock_path, class: "flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+        <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+      </svg>
+      New stock
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Purchase</p>
+      <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@stock_summary[:total_in_price], unit: '') %></p>
     </div>
-  <% end %>
-  <div class="p-6 mb-8 border-b border-gray-200">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">SUMMARY OF ALL STOCKS</h2>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div class="bg-blue-50 rounded-lg p-4">
-        <p class="text-sm text-gray-600">Total Purchase Cost</p>
-        <p class="text-xl font-bold text-blue-700"><%= number_to_currency(@stock_summary[:total_in_price], unit: '') %></p>
-      </div>
-      <div class="bg-yellow-100 rounded-lg p-4">
-        <p class="text-sm text-gray-600">Total Sales Revenue</p>
-        <p class="text-xl font-bold text-green-700"><%= number_to_currency(@stock_summary[:total_out_price], unit: '') %></p>
-      </div>
-      <div class="<%= @stock_summary[:total_profit] >= 0 ? 'bg-green-50' : 'bg-red-50' %> rounded-lg p-4">
-        <p class="text-sm text-gray-600">Total Profit</p>
-        <p class="text-xl font-bold <%= @stock_summary[:total_profit] >= 0 ? 'text-green-700' : 'text-red-700' %>">
-          <%= number_to_currency(@stock_summary[:total_profit], unit: '') %>
-        </p>
-      </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-sm text-gray-600">Products Sold</p>
-        <p class="text-xl font-bold text-gray-700"><%= @stock_summary[:total_sold_products_count] %> / <%= @stock_summary[:total_products_count] %></p>
-      </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Revenue</p>
+      <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@stock_summary[:total_out_price], unit: '') %></p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Profit</p>
+      <p class="mt-1.5 text-2xl font-bold <%= @stock_summary[:total_profit] >= 0 ? 'text-emerald-600' : 'text-red-600' %>">
+        <%= number_to_currency(@stock_summary[:total_profit], unit: '') %>
+      </p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Products Sold</p>
+      <p class="mt-1.5 text-2xl font-bold text-gray-900">
+        <%= @stock_summary[:total_sold_products_count] %><span class="text-gray-400 font-normal text-lg"> / <%= @stock_summary[:total_products_count] %></span>
+      </p>
     </div>
   </div>
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-2xl font-bold text-gray-800">STOCKS</h1>
-    <%= link_to "Add new stock", new_stock_path, class: "bg-indigo-600 text-white px-3 py-1.5 text-sm rounded-md hover:bg-indigo-700 transition ease-in-out duration-150 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 whitespace-nowrap" %>
-  </div>
-  <div class="mb-6">
+
+  <div class="mb-5">
     <%= form_with url: stocks_path, method: :get, class: "w-full", data: { turbo_frame: "_top" } do |f| %>
-      <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
-        <div class="px-3 py-2 bg-gray-100">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500">
+      <div class="flex items-center bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-transparent">
+        <div class="px-3 py-2.5 text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
             <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
           </svg>
         </div>
-        <%= f.text_field :search, value: params[:search], placeholder: "Search products...", class: "w-full py-2 px-3 focus:outline-none" %>
+        <%= f.text_field :search, value: params[:search], placeholder: "Search products across all stocks…", class: "flex-1 py-2.5 text-sm focus:outline-none bg-transparent" %>
         <% if params[:search].present? %>
-          <%= link_to stocks_path(tab: params[:tab]), class: "px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-500" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <%= link_to stocks_path(tab: params[:tab]), class: "px-3 py-2.5 text-gray-400 hover:text-gray-600" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           <% end %>
@@ -51,80 +53,63 @@
       </div>
       <%= f.hidden_field :tab, value: params[:tab] %>
     <% end %>
-  </div>  
-  <div class="mb-6 border-b border-gray-200">
-    <ul class="flex whitespace-nowrap -mb-px text-sm font-medium text-center min-w-full">
-      <li class="mr-2">
-        <%= link_to "Active (#{@stocks_with_unsold_products.size})", 
-            stocks_path(tab: 'unsold', search: params[:search]), 
-            class: "inline-block p-4 border-b-2 rounded-t-lg #{@current_tab == 'unsold' ? 'text-indigo-600 border-indigo-600 active' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}" %>
-      </li>
-      <li class="mr-2">
-        <%= link_to "Complete (#{@fully_sold_stocks.size})", 
-            stocks_path(tab: 'sold', search: params[:search]), 
-            class: "inline-block p-4 border-b-2 rounded-t-lg #{@current_tab == 'sold' ? 'text-indigo-600 border-indigo-600 active' : 'border-transparent hover:text-gray-600 hover:border-gray-300'}" %>
-      </li>
-    </ul>
   </div>
-  <div id="stocks" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+  <div class="flex gap-1 border-b border-gray-200 mb-6">
+    <%= link_to stocks_path(tab: 'unsold', search: params[:search]),
+        class: "px-4 py-2.5 text-sm font-medium border-b-2 transition-colors #{@current_tab == 'unsold' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" do %>
+      Active <span class="ml-1 text-xs font-normal px-1.5 py-0.5 rounded-full <%= @current_tab == 'unsold' ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-500' %>"><%= @stocks_with_unsold_products.size %></span>
+    <% end %>
+    <%= link_to stocks_path(tab: 'sold', search: params[:search]),
+        class: "px-4 py-2.5 text-sm font-medium border-b-2 transition-colors #{@current_tab == 'sold' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}" do %>
+      Complete <span class="ml-1 text-xs font-normal px-1.5 py-0.5 rounded-full <%= @current_tab == 'sold' ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-500' %>"><%= @fully_sold_stocks.size %></span>
+    <% end %>
+  </div>
+
+  <div id="stocks" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @stocks_with_details.each do |stock_details| %>
-      <% 
+      <%
         stock = stock_details[:stock]
         profit = stock_details[:profit]
         total_products = stock_details[:total_products]
         products_with_out_price = stock_details[:products_with_out_price]
-        
-        # Determine background color
-        bg_color = if total_products == 0
-                     'bg-gray-100' # Empty stocks (0 products)
-                   elsif total_products > 0 && products_with_out_price == total_products && profit > 0
-                     'bg-green-50'
-                   elsif total_products > 0 && products_with_out_price == total_products && profit <= 0
-                     'bg-red-50'
-                   elsif profit <= 0
-                     'bg-red-50'
-                   else
-                     'bg-yellow-100'
-                   end
+        all_sold = total_products > 0 && products_with_out_price == total_products
       %>
-      <%= link_to stock, class: "block #{bg_color} rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 text-center relative overflow-visible" do %>
-        <% if total_products > 0 && products_with_out_price == total_products %>
-          <div style="position: absolute; top: 10px; right: 10px; z-index: 10;">
-            <span class="text-green-600 text-xl font-bold" title="All products sold">✓</span>
+      <%= link_to stock, class: "group bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-300 hover:shadow-md transition-all block" do %>
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1 min-w-0 pr-3">
+            <h3 class="font-semibold text-gray-900 truncate"><%= stock.description.upcase %></h3>
+            <p class="text-sm text-gray-500 mt-0.5"><%= stock.stock_date %></p>
           </div>
-        <% elsif total_products == 0 %>
-          <div style="position: absolute; top: 10px; right: 10px; z-index: 10;">
-            <span class="text-gray-600 text-xl font-bold" title="Empty stock">⊘</span>
+          <% if total_products == 0 %>
+            <span class="shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">Empty</span>
+          <% elsif all_sold %>
+            <span class="shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700">Complete</span>
+          <% else %>
+            <span class="shrink-0 text-xs font-medium px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700">Active</span>
+          <% end %>
+        </div>
+
+        <% if total_products == 0 %>
+          <p class="text-sm text-gray-400">No products added yet</p>
+        <% else %>
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-semibold <%= profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>">
+              <%= profit >= 0 ? '+' : '' %><%= number_to_currency(profit, unit: '') %>
+            </span>
+            <span class="text-sm text-gray-500"><%= products_with_out_price %> / <%= total_products %> sold</span>
           </div>
+          <% if total_products > 0 %>
+            <div class="mt-3 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+              <div class="bg-indigo-500 h-full rounded-full transition-all" style="width: <%= (products_with_out_price.to_f / total_products * 100).round %>%"></div>
+            </div>
+          <% end %>
         <% end %>
-        <div class="text-left">
-          <span class="text-black hover:text-indigo-800 font-medium"><%= stock.description.upcase %> - <%= stock.stock_date %></span>
-        </div>
-        <div class="mt-2 text-left">
-          <% if total_products == 0 %>
-            <span class="text-gray-700 font-medium">
-              Empty Stock
-            </span>
-          <% else %>
-            <span class="<%= profit >= 0 ? 'text-green-700' : 'text-red-700' %> font-medium">
-              Profit: <%= number_to_currency(profit, unit: '') %>
-            </span>
-          <% end %>
-        </div>
-        <div class="mt-1 text-sm text-gray-600 font-bold text-left">
-          <% if total_products == 0 %>
-            No products added yet
-          <% else %>
-            Sold: <%= products_with_out_price %> / <%= total_products %> products
-          <% end %>
-        </div>
+
         <% if @search_active && stock_details[:has_matches] %>
-          <div class="mt-3 border-t border-gray-200 pt-2">
-            <% matched_products = stock_details[:products].select { |p| p[:is_match] } %>
-            <% matched_products.each do |product| %>
-              <p class="text-xs text-left text-gray-600 font-semibold">
-                <%= product[:description] %>
-              </p>
+          <div class="mt-3 pt-3 border-t border-gray-100">
+            <% stock_details[:products].select { |p| p[:is_match] }.each do |product| %>
+              <p class="text-xs text-gray-600 font-medium"><%= product[:description] %></p>
             <% end %>
           </div>
         <% end %>

@@ -14,7 +14,7 @@ console_command = '/rails/bin/rails console'
   PORT = '8080'
 
 [processes]
-  app = "./bin/rake litestream:run ./bin/rails server"
+  app = "sh -c 'chmod 664 /data/production.sqlite3 2>/dev/null; chown rails:rails /data/production.sqlite3 2>/dev/null; ./bin/rake litestream:run ./bin/rails server'"
 
 [[mounts]]
   source = 'data'
