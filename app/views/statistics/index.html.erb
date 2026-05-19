@@ -48,46 +48,23 @@
   <% else %>
     <%# Summary cards %>
     <div class="grid grid-cols-3 gap-4 mb-6">
-      <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <div class="bg-yellow-50 rounded-xl border border-yellow-300 p-5">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Paid</p>
         <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@paid, unit: '') %></p>
         <p class="mt-1 text-xs text-gray-400">cost of items sold</p>
       </div>
 
-      <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <div class="bg-blue-50 rounded-xl border border-blue-300 p-5">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Revenue</p>
         <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@revenue, unit: '') %></p>
         <p class="mt-1 text-xs text-gray-400"><%= @sold_products.size %> items sold</p>
       </div>
 
-      <div class="bg-white rounded-xl border border-gray-200 p-5">
+      <% margin = @revenue > 0 ? (@profit / @revenue * 100).round(1) : 0 %>
+      <div class="<%= @profit >= 0 ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300' %> rounded-xl border p-5">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Profit</p>
-        <p class="mt-1.5 text-2xl font-bold <%= @profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>">
-          <%= number_to_currency(@profit, unit: '') %>
-        </p>
-        <% margin = @revenue > 0 ? (@profit / @revenue * 100).round(1) : 0 %>
+        <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@profit, unit: '') %></p>
         <p class="mt-1 text-xs text-gray-400"><%= margin %>% margin</p>
-      </div>
-    </div>
-
-    <%# Chart %>
-    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-      <h2 class="text-sm font-semibold text-gray-700 mb-4">Paid vs Revenue</h2>
-      <div class="h-36 sm:h-56">
-        <canvas data-controller="chart"
-                data-chart-labels-value="<%= ['Paid', 'Revenue'].to_json %>"
-                data-chart-invested-value="<%= [@paid].to_json %>"
-                data-chart-revenue-value="<%= [@revenue].to_json %>"
-                data-chart-total-invested-value="<%= @paid %>"
-                data-chart-total-revenue-value="<%= @revenue %>"></canvas>
-      </div>
-      <div class="flex items-center gap-6 mt-4 justify-center">
-        <span class="flex items-center gap-2 text-sm text-gray-500">
-          <span class="w-3 h-3 rounded-full bg-indigo-500 inline-block"></span> Paid
-        </span>
-        <span class="flex items-center gap-2 text-sm text-gray-500">
-          <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Revenue
-        </span>
       </div>
     </div>
 
