@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_18_170959) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_19_123801) do
   create_table "products", force: :cascade do |t|
     t.string "description"
     t.decimal "in_price", precision: 10, scale: 2
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_18_170959) do
     t.integer "stock_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "exclude_from_stats", default: false, null: false
     t.index ["stock_id"], name: "index_products_on_stock_id"
   end
 

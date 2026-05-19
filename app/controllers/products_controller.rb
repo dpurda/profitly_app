@@ -74,7 +74,7 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.expect(product: [ :description, :in_price, :out_price, :size, :prod_code, :stock_id ])
+      params.expect(product: [ :description, :in_price, :out_price, :size, :prod_code, :stock_id, :exclude_from_stats ])
     end
 
     # Check if stock belongs to current user

@@ -75,6 +75,8 @@ ro:
     select_stock: "Selectează un stoc…"
     submit_create: "Adaugă Produs"
     submit_update: "Salvează Modificările"
+    exclude_from_stats: "Exclude din statistici"
+    exclude_from_stats_hint: "Acest produs nu va apărea în calculele lunare de vânzări"
     errors:
       header: "au împiedicat salvarea produsului:"
 

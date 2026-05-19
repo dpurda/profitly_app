@@ -75,6 +75,8 @@ en:
     select_stock: "Select a stock…"
     submit_create: "Add Product"
     submit_update: "Save Changes"
+    exclude_from_stats: "Exclude from statistics"
+    exclude_from_stats_hint: "This product won't appear in monthly sales calculations"
     errors:
       header: "prevented this product from being saved:"
 

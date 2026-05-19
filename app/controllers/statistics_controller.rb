@@ -13,6 +13,7 @@ class StatisticsController < ApplicationController
                             .where(stocks: { user_id: current_user.id })
                             .where.not(out_price: nil)
                             .where(updated_at: period)
+                            .where(exclude_from_stats: false)
                             .includes(:stock)
                             .order(updated_at: :desc)
 
