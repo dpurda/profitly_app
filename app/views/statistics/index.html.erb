@@ -50,20 +50,20 @@
     <div class="grid grid-cols-3 gap-4 mb-6">
       <div class="bg-yellow-50 rounded-xl border border-yellow-300 p-5">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Paid</p>
-        <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@paid, unit: '') %></p>
+        <p class="mt-1.5 text-2xl font-bold text-yellow-600"><%= number_to_currency(@paid, unit: '') %></p>
         <p class="mt-1 text-xs text-gray-400">cost of items sold</p>
       </div>
 
       <div class="bg-blue-50 rounded-xl border border-blue-300 p-5">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Revenue</p>
-        <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@revenue, unit: '') %></p>
+        <p class="mt-1.5 text-2xl font-bold text-blue-600"><%= number_to_currency(@revenue, unit: '') %></p>
         <p class="mt-1 text-xs text-gray-400"><%= @sold_products.size %> items sold</p>
       </div>
 
       <% margin = @revenue > 0 ? (@profit / @revenue * 100).round(1) : 0 %>
       <div class="<%= @profit >= 0 ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300' %> rounded-xl border p-5">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Profit</p>
-        <p class="mt-1.5 text-2xl font-bold text-gray-900"><%= number_to_currency(@profit, unit: '') %></p>
+        <p class="mt-1.5 text-2xl font-bold <%= @profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>"><%= number_to_currency(@profit, unit: '') %></p>
         <p class="mt-1 text-xs text-gray-400"><%= margin %>% margin</p>
       </div>
     </div>
