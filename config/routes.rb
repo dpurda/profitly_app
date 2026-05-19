@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     end
   resources :products, only: %i[show new create edit update destroy]
   resources :stocks
+  get 'statistics', to: 'statistics#index', as: :statistics
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'

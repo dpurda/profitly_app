@@ -12,6 +12,13 @@
       </svg>
       Stocks
     <% end %>
+
+    <%= link_to statistics_path, class: "flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors #{request.path.start_with?('/statistics') ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-3 shrink-0">
+        <path d="M15.5 2A1.5 1.5 0 0014 3.5v13a1.5 1.5 0 003 0v-13A1.5 1.5 0 0015.5 2zM9.5 6A1.5 1.5 0 008 7.5v9a1.5 1.5 0 003 0v-9A1.5 1.5 0 009.5 6zM3.5 10A1.5 1.5 0 002 11.5v5a1.5 1.5 0 003 0v-5A1.5 1.5 0 003.5 10z" />
+      </svg>
+      Statistics
+    <% end %>
   </nav>
 
   <div class="border-t border-gray-800 p-3 shrink-0">
