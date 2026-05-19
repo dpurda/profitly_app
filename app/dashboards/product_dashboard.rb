@@ -14,6 +14,7 @@ class ProductDashboard < Administrate::BaseDashboard
     out_price: Field::Number,
     prod_code: Field::String,
     size: Field::String,
+    exclude_from_stats: Field::Boolean,
     stock: Field::BelongsTo,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
@@ -41,6 +42,7 @@ class ProductDashboard < Administrate::BaseDashboard
     out_price
     prod_code
     size
+    exclude_from_stats
     stock
     created_at
     updated_at
@@ -55,6 +57,7 @@ class ProductDashboard < Administrate::BaseDashboard
     out_price
     prod_code
     size
+    exclude_from_stats
     stock
   ].freeze
 
