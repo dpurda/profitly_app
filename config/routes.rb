@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :products, only: %i[show new create edit update destroy]
   resources :stocks
   get 'statistics', to: 'statistics#index', as: :statistics
+  post 'locale', to: 'locale#update', as: :locale
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'

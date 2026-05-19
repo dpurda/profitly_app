@@ -1,12 +1,12 @@
-<% content_for :title, "Statistics" %>
+<% content_for :title, t("statistics.title") %>
 
 <div class="mb-8">
   <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Statistics</h1>
+    <h1 class="text-2xl font-bold text-gray-900"><%= t("statistics.title") %></h1>
     <% if @selected_month %>
-      <p class="mt-1 text-sm text-gray-500">Showing data for <span class="font-medium text-gray-700"><%= @selected_month.strftime('%B %Y') %></span></p>
+      <p class="mt-1 text-sm text-gray-500"><%= t("statistics.showing_data") %> <span class="font-medium text-gray-700"><%= @selected_month.strftime('%B %Y') %></span></p>
     <% else %>
-      <p class="mt-1 text-sm text-gray-500">Select a month to view your data</p>
+      <p class="mt-1 text-sm text-gray-500"><%= t("statistics.select_month") %></p>
     <% end %>
   </div>
 
@@ -18,13 +18,13 @@
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
       <%= f.select :month,
             options_for_select(months, params[:month].to_i),
-            { include_blank: "Month" },
+            { include_blank: t("statistics.month_placeholder") },
             class: "appearance-none pl-4 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
       <%= f.select :year,
             options_for_select(years, params[:year].to_i.nonzero? || current_year),
             {},
             class: "appearance-none pl-4 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
-      <%= f.submit "View", class: "px-4 py-3 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer" %>
+      <%= f.submit t("statistics.view"), class: "px-4 py-3 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer" %>
     </div>
   <% end %>
 
@@ -35,43 +35,43 @@
           <path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z" clip-rule="evenodd" />
         </svg>
       </div>
-      <p class="text-gray-700 font-medium">Pick a month to get started</p>
-      <p class="mt-1 text-sm text-gray-400">Use the picker above to see your sales for that month</p>
+      <p class="text-gray-700 font-medium"><%= t("statistics.empty_heading") %></p>
+      <p class="mt-1 text-sm text-gray-400"><%= t("statistics.empty_message") %></p>
     </div>
 
   <% elsif @sold_products.empty? %>
     <div class="bg-white rounded-xl border border-gray-200 p-16 text-center">
-      <p class="text-gray-700 font-medium">No sales in <%= @selected_month.strftime('%B %Y') %></p>
-      <p class="mt-1 text-sm text-gray-400">Try a different month.</p>
+      <p class="text-gray-700 font-medium"><%= t("statistics.no_sales") %> <%= @selected_month.strftime('%B %Y') %></p>
+      <p class="mt-1 text-sm text-gray-400"><%= t("statistics.try_another") %></p>
     </div>
 
   <% else %>
     <%# Summary cards %>
     <div class="grid grid-cols-3 gap-4 mb-6">
       <div class="bg-yellow-50 rounded-xl border border-yellow-300 p-5">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Paid</p>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.paid") %></p>
         <p class="mt-1.5 text-2xl font-bold text-yellow-600"><%= number_to_currency(@paid, unit: '') %></p>
-        <p class="mt-1 text-xs text-gray-400">cost of items sold</p>
+        <p class="mt-1 text-xs text-gray-400"><%= t("statistics.cost_of_items") %></p>
       </div>
 
       <div class="bg-blue-50 rounded-xl border border-blue-300 p-5">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Revenue</p>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.revenue") %></p>
         <p class="mt-1.5 text-2xl font-bold text-blue-600"><%= number_to_currency(@revenue, unit: '') %></p>
-        <p class="mt-1 text-xs text-gray-400"><%= @sold_products.size %> items sold</p>
+        <p class="mt-1 text-xs text-gray-400"><%= @sold_products.size %> <%= t("statistics.items_sold") %></p>
       </div>
 
       <% margin = @revenue > 0 ? (@profit / @revenue * 100).round(1) : 0 %>
       <div class="<%= @profit >= 0 ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300' %> rounded-xl border p-5">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Profit</p>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.profit") %></p>
         <p class="mt-1.5 text-2xl font-bold <%= @profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>"><%= number_to_currency(@profit, unit: '') %></p>
-        <p class="mt-1 text-xs text-gray-400"><%= margin %>% margin</p>
+        <p class="mt-1 text-xs text-gray-400"><%= margin %>% <%= t("statistics.margin") %></p>
       </div>
     </div>
 
     <%# Items sold this month %>
     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <div class="px-5 py-4 border-b border-gray-100">
-        <h2 class="text-sm font-semibold text-gray-700">Items sold in <%= @selected_month.strftime('%B %Y') %></h2>
+        <h2 class="text-sm font-semibold text-gray-700"><%= t("statistics.items_sold_in") %> <%= @selected_month.strftime('%B %Y') %></h2>
       </div>
 
       <%# Mobile cards %>
@@ -86,9 +86,9 @@
               <span class="text-sm font-semibold text-emerald-600"><%= number_to_currency(product.out_price, unit: '') %></span>
             </div>
             <div class="flex gap-4 text-xs text-gray-500">
-              <span>Paid <span class="font-medium text-gray-700"><%= number_to_currency(product.in_price, unit: '') %></span></span>
+              <span><%= t("statistics.paid") %> <span class="font-medium text-gray-700"><%= number_to_currency(product.in_price, unit: '') %></span></span>
               <% item_profit = (product.out_price || 0) - (product.in_price || 0) %>
-              <span>Profit <span class="font-medium <%= item_profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>"><%= number_to_currency(item_profit, unit: '') %></span></span>
+              <span><%= t("statistics.profit") %> <span class="font-medium <%= item_profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>"><%= number_to_currency(item_profit, unit: '') %></span></span>
             </div>
           </div>
         <% end %>
@@ -99,11 +99,11 @@
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-gray-100 bg-gray-50">
-              <th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Item</th>
-              <th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Stock</th>
-              <th class="text-right px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Paid</th>
-              <th class="text-right px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Sold for</th>
-              <th class="text-right px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Profit</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.item") %></th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.stock") %></th>
+              <th class="text-right px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.paid") %></th>
+              <th class="text-right px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.sold_for") %></th>
+              <th class="text-right px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.profit") %></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">

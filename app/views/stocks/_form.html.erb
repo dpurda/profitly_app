@@ -1,7 +1,7 @@
 <%= form_with(model: stock, html: { class: "space-y-5 min-w-0" }) do |form| %>
   <% if stock.errors.any? %>
     <div class="rounded-lg bg-red-50 border border-red-200 p-4">
-      <p class="text-sm font-medium text-red-800 mb-1"><%= pluralize(stock.errors.count, "error") %> prevented this stock from being saved:</p>
+      <p class="text-sm font-medium text-red-800 mb-1"><%= pluralize(stock.errors.count, "error") %> <%= t("stocks.errors_header") %></p>
       <ul class="text-sm text-red-700 list-disc list-inside space-y-0.5">
         <% stock.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,18 +11,19 @@
   <% end %>
 
   <div>
-    <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.label :description, t("stock.description"), class: "block text-sm font-medium text-gray-700 mb-1" %>
     <%= form.text_field :description, class: "block w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
   </div>
 
   <div>
-    <%= form.label :stock_date, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.label :stock_date, t("stocks.date_label"), class: "block text-sm font-medium text-gray-700 mb-1" %>
     <%= form.date_field :stock_date, class: "block w-full max-w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
   </div>
 
   <%= form.hidden_field :user_id, value: current_user.id if current_user %>
 
   <div class="pt-1">
-    <%= form.submit class: "w-full flex justify-center py-2.5 px-4 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors cursor-pointer" %>
+    <%= form.submit stock.new_record? ? t("stocks.submit_create") : t("stocks.submit_update"),
+        class: "w-full flex justify-center py-2.5 px-4 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors cursor-pointer" %>
   </div>
 <% end %>

@@ -1,4 +1,4 @@
-<% content_for :title, "Edit Stock" %>
+<% content_for :title, t("stocks.edit_title") %>
 
 <div class="max-w-lg">
   <div class="mb-6 flex items-center gap-3">
@@ -9,11 +9,11 @@
       <%= @stock.description.upcase %>
     <% end %>
     <span class="text-gray-300">/</span>
-    <span class="text-sm font-medium text-gray-900">Edit</span>
+    <span class="text-sm font-medium text-gray-900"><%= t("stocks.edit") %></span>
   </div>
 
   <div class="bg-white rounded-xl border border-gray-200 p-6">
-    <h1 class="text-lg font-semibold text-gray-900 mb-5">Edit Stock</h1>
+    <h1 class="text-lg font-semibold text-gray-900 mb-5"><%= t("stocks.edit_title") %></h1>
     <%= render "form", stock: @stock %>
   </div>
 </div>

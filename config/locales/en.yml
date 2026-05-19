@@ -1,31 +1,131 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  nav:
+    stocks: "Stocks"
+    statistics: "Statistics"
+    sign_out: "Sign out"
+
+  home:
+    headline_1: "Track inventory."
+    headline_2: "Maximize profit."
+    description: "Profitly helps you manage stock, record purchase and sale prices, and see your margins at a glance."
+    sign_in: "Sign in"
+    features:
+      stock_title: "Stock management"
+      stock_desc: "Organize products into stocks by date and batch. Keep everything in one place."
+      price_title: "Price tracking"
+      price_desc: "Record purchase and sale prices. Mark items as sold and track your margins automatically."
+      profit_title: "Profit analysis"
+      profit_desc: "See total purchase cost, revenue, and profit for every stock and across all stocks."
+
+  stocks:
+    title: "Stocks"
+    new: "New stock"
+    total_purchase: "Total Purchase"
+    total_revenue: "Total Revenue"
+    total_profit: "Total Profit"
+    products_sold: "Products Sold"
+    search_placeholder: "Search products across all stocks…"
+    tab_active: "Active"
+    tab_complete: "Complete"
+    badge_empty: "Empty"
+    badge_complete: "Complete"
+    badge_active: "Active"
+    no_products: "No products added yet"
+    sold: "sold"
+    new_title: "Add New Stock"
+    edit_title: "Edit Stock"
+    delete_confirm: "Delete this stock and all its products? This cannot be undone."
+    breadcrumb: "Stocks"
+    edit: "Edit"
+    delete: "Delete"
+    date_label: "Date"
+    submit_create: "Add Stock"
+    submit_update: "Save Changes"
+    errors_header: "prevented this stock from being saved:"
+
+  stock:
+    purchase: "Purchase"
+    revenue: "Revenue"
+    profit: "Profit"
+    search_placeholder: "Search products…"
+    add_product: "Add product"
+    description: "Description"
+    sale: "Sale"
+    size: "Size"
+    code: "Code"
+    delete_product_confirm: "Delete this product? This cannot be undone."
+    no_products: "No products in this stock yet"
+    add_first: "Add first product"
+    buy: "Buy"
+    sell: "Sell"
+
+  products:
+    new_title: "Add New Product"
+    edit_title: "Edit Product"
+    breadcrumb: "Add Product"
+    edit_breadcrumb: "Edit Product"
+    purchase_price: "Purchase price"
+    sale_price: "Sale price"
+    fill_when_sold: "Fill when sold"
+    size: "Size"
+    optional: "Optional"
+    product_code: "Product code"
+    auto_generated: "Auto-generated if blank"
+    code_placeholder: "e.g. ABC12345"
+    select_stock: "Select a stock…"
+    submit_create: "Add Product"
+    submit_update: "Save Changes"
+    errors:
+      header: "prevented this product from being saved:"
+
+  statistics:
+    title: "Statistics"
+    showing_data: "Showing data for"
+    select_month: "Select a month to view your data"
+    month_placeholder: "Month"
+    view: "View"
+    empty_heading: "Pick a month to get started"
+    empty_message: "Use the picker above to see your sales for that month"
+    no_sales: "No sales in"
+    try_another: "Try a different month."
+    paid: "Paid"
+    cost_of_items: "cost of items sold"
+    revenue: "Revenue"
+    items_sold: "items sold"
+    profit: "Profit"
+    margin: "margin"
+    items_sold_in: "Items sold in"
+    item: "Item"
+    stock: "Stock"
+    sold_for: "Sold for"
+
+  passwords:
+    title: "Change Password"
+    current: "Current Password"
+    new: "New Password"
+    confirm: "Confirm New Password"
+    cancel: "Cancel"
+    submit: "Update Password"
+    success_title: "Password Updated"
+    success_message: "Your password has been changed successfully."
+    done: "Done"
+
+  devise:
+    login:
+      heading: "Welcome back"
+      subheading: "Sign in to your account"
+      email: "Email"
+      password: "Password"
+      submit: "Sign in"
+    register:
+      heading: "Create account"
+      subheading: "Start tracking your profits today"
+      first_name: "First name"
+      last_name: "Last name"
+      email: "Email"
+      password: "Password"
+      password_hint: "characters minimum"
+      password_confirmation: "Confirm password"
+      submit: "Create account"
+      already_account: "Already have an account?"
+      sign_in: "Sign in"

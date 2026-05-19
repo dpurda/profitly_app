@@ -1,12 +1,12 @@
 <div class="max-w-4xl mx-auto px-4 py-20 text-center">
   <h1 class="text-5xl font-bold text-gray-900 tracking-tight mb-4">
-    Track inventory.<br>Maximize profit.
+    <%= t("home.headline_1") %><br><%= t("home.headline_2") %>
   </h1>
   <p class="text-xl text-gray-500 max-w-xl mx-auto mb-10">
-    Profitly helps you manage stock, record purchase and sale prices, and see your margins at a glance.
+    <%= t("home.description") %>
   </p>
   <div class="flex items-center justify-center gap-4">
-    <%= link_to "Sign in", new_user_session_path, class: "px-6 py-3 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm" %>
+    <%= link_to t("home.sign_in"), new_user_session_path, class: "px-6 py-3 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm" %>
   </div>
 </div>
 
@@ -18,8 +18,8 @@
           <path fill-rule="evenodd" d="M.99 5.24A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25l.01 9.5A2.25 2.25 0 0116.76 17H3.26A2.272 2.272 0 011 14.74l-.01-9.5zm8.26 9.52v-.001a.75.75 0 00.75.75h4.76a.75.75 0 000-1.5H9.74v.001a.75.75 0 00-.49.75zm-2.95-2.524a.75.75 0 00-.035 1.06l1.5 1.5a.75.75 0 001.06-.001l3-3a.75.75 0 10-1.06-1.06L7.81 13.23l-.965-.965a.75.75 0 00-1.06.035z" clip-rule="evenodd" />
         </svg>
       </div>
-      <h3 class="font-semibold text-gray-900 mb-1">Stock management</h3>
-      <p class="text-sm text-gray-500">Organize products into stocks by date and batch. Keep everything in one place.</p>
+      <h3 class="font-semibold text-gray-900 mb-1"><%= t("home.features.stock_title") %></h3>
+      <p class="text-sm text-gray-500"><%= t("home.features.stock_desc") %></p>
     </div>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
@@ -28,8 +28,8 @@
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13.25a.75.75 0 00-1.5 0V8.5h-4.75a.75.75 0 000 1.5h4.75v3.75a.75.75 0 001.5 0V10h4.75a.75.75 0 000-1.5h-4.75V4.75z" clip-rule="evenodd" />
         </svg>
       </div>
-      <h3 class="font-semibold text-gray-900 mb-1">Price tracking</h3>
-      <p class="text-sm text-gray-500">Record purchase and sale prices. Mark items as sold and track your margins automatically.</p>
+      <h3 class="font-semibold text-gray-900 mb-1"><%= t("home.features.price_title") %></h3>
+      <p class="text-sm text-gray-500"><%= t("home.features.price_desc") %></p>
     </div>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6">
@@ -38,8 +38,8 @@
           <path d="M15.98 1.804a1 1 0 00-1.96 0l-.24 1.192a1 1 0 01-.784.785l-1.192.238a1 1 0 000 1.962l1.192.238a1 1 0 01.785.785l.238 1.192a1 1 0 001.962 0l.238-1.192a1 1 0 01.785-.785l1.192-.238a1 1 0 000-1.962l-1.192-.238a1 1 0 01-.785-.785l-.238-1.192zM6.949 5.684a1 1 0 00-1.898 0l-.683 2.051a1 1 0 01-.633.633l-2.051.683a1 1 0 000 1.898l2.051.684a1 1 0 01.633.632l.683 2.051a1 1 0 001.898 0l.683-2.051a1 1 0 01.633-.633l2.051-.683a1 1 0 000-1.898l-2.051-.683a1 1 0 01-.633-.633L6.95 5.684z" />
         </svg>
       </div>
-      <h3 class="font-semibold text-gray-900 mb-1">Profit analysis</h3>
-      <p class="text-sm text-gray-500">See total purchase cost, revenue, and profit for every stock and across all stocks.</p>
+      <h3 class="font-semibold text-gray-900 mb-1"><%= t("home.features.profit_title") %></h3>
+      <p class="text-sm text-gray-500"><%= t("home.features.profit_desc") %></p>
     </div>
   </div>
 </div>
