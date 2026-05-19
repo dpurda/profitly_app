@@ -54,6 +54,7 @@ en:
     size: "Size"
     code: "Code"
     delete_product_confirm: "Delete this product? This cannot be undone."
+    excluded_from_stats_label: "Excluded from monthly statistics"
     no_products: "No products in this stock yet"
     add_first: "Add first product"
     buy: "Buy"

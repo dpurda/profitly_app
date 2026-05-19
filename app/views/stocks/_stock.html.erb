@@ -64,11 +64,22 @@
           </thead>
           <tbody class="divide-y divide-gray-100 product-list-<%= stock.id %>">
             <% (defined?(@products) ? @products : stock.products).each do |product| %>
-              <tr class="hover:bg-gray-50 transition-colors product-row" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
+              <tr class="<%= product.exclude_from_stats? ? 'bg-gray-50' : 'hover:bg-gray-50' %> transition-colors product-row" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
                 <td class="px-4 py-3">
                   <div class="flex items-center gap-2.5">
-                    <span class="w-2 h-2 rounded-full shrink-0 <%= product.out_price.present? ? 'bg-emerald-400' : 'bg-gray-300' %>"></span>
-                    <span class="text-sm text-gray-900"><%= product.description %></span>
+                    <% if product.exclude_from_stats? %>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-yellow-400 shrink-0">
+                        <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                      </svg>
+                    <% else %>
+                      <span class="w-2 h-2 rounded-full shrink-0 <%= product.out_price.present? ? 'bg-emerald-400' : 'bg-gray-300' %>"></span>
+                    <% end %>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm text-gray-900"><%= product.description %></span>
+                      <% if product.exclude_from_stats? %>
+                        <span class="text-xs text-gray-400"><%= t("stock.excluded_from_stats_label") %></span>
+                      <% end %>
+                    </div>
                   </div>
                 </td>
                 <td class="px-4 py-3 text-right text-sm text-gray-700"><%= number_to_currency(product.in_price, unit: '') %></td>
@@ -102,12 +113,23 @@
 
       <div class="md:hidden divide-y divide-gray-100 product-list-mobile-<%= stock.id %>">
         <% (defined?(@products) ? @products : stock.products).each do |product| %>
-          <div class="p-4 product-card" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
+          <div class="p-4 product-card <%= product.exclude_from_stats? ? 'bg-gray-50' : '' %>" data-description="<%= product.description.downcase %>" data-size="<%= product.size.downcase %>" data-code="<%= product.prod_code&.downcase %>">
             <div class="flex items-start justify-between">
               <div class="flex items-start gap-2.5 flex-1 min-w-0">
-                <span class="w-2 h-2 rounded-full mt-1.5 shrink-0 <%= product.out_price.present? ? 'bg-emerald-400' : 'bg-gray-300' %>"></span>
+                <% if product.exclude_from_stats? %>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-yellow-400 mt-0.5 shrink-0">
+                    <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                  </svg>
+                <% else %>
+                  <span class="w-2 h-2 rounded-full mt-1.5 shrink-0 <%= product.out_price.present? ? 'bg-emerald-400' : 'bg-gray-300' %>"></span>
+                <% end %>
                 <div class="flex-1 min-w-0">
-                  <p class="font-medium text-gray-900 text-sm"><%= product.description %></p>
+                  <div class="flex items-center gap-2">
+                    <p class="font-medium text-gray-900 text-sm"><%= product.description %></p>
+                    <% if product.exclude_from_stats? %>
+                      <span class="text-xs text-gray-400"><%= t("stock.excluded_from_stats_label") %></span>
+                    <% end %>
+                  </div>
                   <div class="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-sm text-gray-500">
                     <span><%= t("stock.buy") %>: <%= number_to_currency(product.in_price, unit: '') %></span>
                     <span class="<%= product.out_price.present? ? 'text-emerald-600 font-medium' : '' %>">

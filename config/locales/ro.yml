@@ -54,6 +54,7 @@ ro:
     size: "Mărime"
     code: "Cod"
     delete_product_confirm: "Ștergi acest produs? Această acțiune nu poate fi anulată."
+    excluded_from_stats_label: "Exclus din statisticile lunare"
     no_products: "Nu există produse în acest stoc"
     add_first: "Adaugă primul produs"
     buy: "Cumpărat"
