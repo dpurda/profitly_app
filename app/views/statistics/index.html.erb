@@ -47,24 +47,24 @@
 
   <% else %>
     <%# Summary cards %>
-    <div class="grid grid-cols-3 gap-4 mb-6">
-      <div class="bg-yellow-50 rounded-xl border border-yellow-300 p-5">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6">
+      <div class="bg-yellow-50 rounded-xl border border-yellow-300 px-4 py-2.5 sm:p-5 flex sm:block items-center justify-between">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.paid") %></p>
-        <p class="mt-1.5 text-2xl font-bold text-yellow-600"><%= number_to_currency(@paid, unit: '') %></p>
-        <p class="mt-1 text-xs text-gray-400"><%= t("statistics.cost_of_items") %></p>
+        <p class="text-lg sm:text-2xl sm:mt-1.5 font-bold text-yellow-600"><%= number_to_currency(@paid, unit: '') %></p>
+        <p class="hidden sm:block mt-1 text-xs text-gray-400"><%= t("statistics.cost_of_items") %></p>
       </div>
 
-      <div class="bg-blue-50 rounded-xl border border-blue-300 p-5">
+      <div class="bg-blue-50 rounded-xl border border-blue-300 px-4 py-2.5 sm:p-5 flex sm:block items-center justify-between">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.revenue") %></p>
-        <p class="mt-1.5 text-2xl font-bold text-blue-600"><%= number_to_currency(@revenue, unit: '') %></p>
-        <p class="mt-1 text-xs text-gray-400"><%= @sold_products.size %> <%= t("statistics.items_sold") %></p>
+        <p class="text-lg sm:text-2xl sm:mt-1.5 font-bold text-blue-600"><%= number_to_currency(@revenue, unit: '') %></p>
+        <p class="hidden sm:block mt-1 text-xs text-gray-400"><%= @sold_products.size %> <%= t("statistics.items_sold") %></p>
       </div>
 
       <% margin = @revenue > 0 ? (@profit / @revenue * 100).round(1) : 0 %>
-      <div class="<%= @profit >= 0 ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300' %> rounded-xl border p-5">
+      <div class="<%= @profit >= 0 ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300' %> rounded-xl border px-4 py-2.5 sm:p-5 flex sm:block items-center justify-between">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("statistics.profit") %></p>
-        <p class="mt-1.5 text-2xl font-bold <%= @profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>"><%= number_to_currency(@profit, unit: '') %></p>
-        <p class="mt-1 text-xs text-gray-400"><%= margin %>% <%= t("statistics.margin") %></p>
+        <p class="text-lg sm:text-2xl sm:mt-1.5 font-bold <%= @profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>"><%= number_to_currency(@profit, unit: '') %></p>
+        <p class="hidden sm:block mt-1 text-xs text-gray-400"><%= margin %>% <%= t("statistics.margin") %></p>
       </div>
     </div>
 

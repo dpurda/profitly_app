@@ -14,18 +14,18 @@
     profit = total_s - total_p
   %>
 
-  <div class="grid grid-cols-3 gap-4 mb-6">
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6">
+    <div class="bg-yellow-50 rounded-xl border border-yellow-300 px-4 py-2.5 sm:p-4 flex sm:block items-center justify-between">
       <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("stock.purchase") %></p>
-      <p class="mt-1.5 text-xl font-bold text-gray-900"><%= number_to_currency(total_p, unit: '') %></p>
+      <p class="text-lg sm:text-xl sm:mt-1.5 font-bold text-yellow-600"><%= number_to_currency(total_p, unit: '') %></p>
     </div>
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
+    <div class="bg-blue-50 rounded-xl border border-blue-300 px-4 py-2.5 sm:p-4 flex sm:block items-center justify-between">
       <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("stock.revenue") %></p>
-      <p class="mt-1.5 text-xl font-bold text-gray-900"><%= number_to_currency(total_s, unit: '') %></p>
+      <p class="text-lg sm:text-xl sm:mt-1.5 font-bold text-blue-600"><%= number_to_currency(total_s, unit: '') %></p>
     </div>
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
+    <div class="<%= profit >= 0 ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300' %> rounded-xl border px-4 py-2.5 sm:p-4 flex sm:block items-center justify-between">
       <p class="text-xs font-medium text-gray-500 uppercase tracking-wide"><%= t("stock.profit") %></p>
-      <p class="mt-1.5 text-xl font-bold <%= profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>">
+      <p class="text-lg sm:text-xl sm:mt-1.5 font-bold <%= profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>">
         <%= profit >= 0 ? '+' : '' %><%= number_to_currency(profit, unit: '') %>
       </p>
     </div>
@@ -41,11 +41,10 @@
         </div>
         <input type="text" id="product-search-<%= stock.id %>" placeholder="<%= t("stock.search_placeholder") %>" class="flex-1 py-2.5 text-sm focus:outline-none bg-transparent" aria-label="<%= t("stock.search_placeholder") %>">
       </div>
-      <%= link_to new_product_path(stock_id: stock.id), class: "flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shrink-0" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+      <%= link_to new_product_path(stock_id: stock.id), class: "flex items-center justify-center px-3 self-stretch text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shrink-0" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
           <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
         </svg>
-        <%= t("stock.add_product") %>
       <% end %>
     </div>
 
@@ -168,11 +167,10 @@
         </svg>
       </div>
       <p class="text-gray-500 text-sm mb-4"><%= t("stock.no_products") %></p>
-      <%= link_to new_product_path(stock_id: stock.id), class: "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+      <%= link_to new_product_path(stock_id: stock.id), class: "inline-flex items-center justify-center w-9 h-9 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
           <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
         </svg>
-        <%= t("stock.add_first") %>
       <% end %>
     </div>
   <% end %>
